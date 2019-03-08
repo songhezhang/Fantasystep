@@ -1,0 +1,10 @@
+dn: cn=Binru,ou=people,dc=fantasystep,dc=com
+objectClass: top
+objectClass: person
+objectClass: fantasystepNode
+cn: Binru
+sn: bhuang
+fantasystepEmail: aggiebinbin@gmail.com
+fantasystepId: 72bedae8-85e0-11e4-928e-0242ac11000b
+fantasystepParentId: 48ab94da-604f-443b-8672-fe6c478fe2a2
+userPassword: {MD5}4p3TjHEYVQHwycUY6JyvWQ==

@@ -1,0 +1,28 @@
+dn: cn=fantasystep,cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: fantasystep
+olcAttributeTypes: ( 1.3.6.1.4.1.4203.666.1.90
+        NAME 'fantasystepId'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{1024} )
+        
+olcAttributeTypes: ( 1.3.6.1.4.1.4203.666.1.91
+        NAME 'fantasystepParentId'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{1024} )
+        
+olcAttributeTypes: ( 1.3.6.1.4.1.4203.666.1.92
+        NAME 'fantasystepEmail'
+        EQUALITY caseIgnoreMatch
+        SUBSTR caseIgnoreSubstringsMatch
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.15{1024} )
+        
+olcObjectClasses:  ( 1.3.6.1.4.1.4203.666.1.100
+        NAME 'fantasystepNode'
+        DESC 'Fantasystep Node'
+        SUP top
+        AUXILIARY
+        MUST  ( fantasystepId $ fantasystepParentId )
+        MAY     fantasystepEmail)

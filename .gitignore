@@ -1,0 +1,12 @@
+.DS_Store
+.classpath
+.settings/
+.project
+target/
+.cache
+.class
+.metadata/
+RemoteSystemsTempFiles
+*.tar.gz
+lib/
+widgetsets/

@@ -1,0 +1,171 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>com.fantasystep</groupId>
+	<artifactId>annotation</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+	
+	<name>fannotation</name>
+	<url>http://maven.apache.org</url>
+	
+	<properties>
+	  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	  <org.slf4j-version>1.5.11</org.slf4j-version>
+	</properties>
+
+	<dependencies>
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- FantasyStep -->
+		<dependency>
+		    <groupId>com.fantasystep</groupId>
+		    <artifactId>domain</artifactId>
+		    <version>1.0.0</version>
+	    </dependency>
+	    <dependency>
+		    <groupId>com.fantasystep</groupId>
+		    <artifactId>syswdomain</artifactId>
+		    <version>1.0.0</version>
+		</dependency>
+	    <dependency>
+	    	<groupId>com.fantasystep</groupId>
+	        <artifactId>utils</artifactId>
+	        <version>1.0.0</version>
+	    </dependency>
+	    <!-- Ant -->
+	    <dependency>
+			<groupId>org.apache.ant</groupId>
+			<artifactId>ant-nodeps</artifactId>
+			<version>1.7.0</version>
+		</dependency>
+	    <!-- Test -->
+	    <dependency>
+	    	<groupId>junit</groupId>
+	    	<artifactId>junit</artifactId>
+	    	<version>3.8.1</version>
+	    	<scope>test</scope>
+	  	</dependency>
+	</dependencies>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-eclipse-plugin</artifactId>
+					<version>2.9</version>
+					<configuration>
+						<additionalProjectnatures>
+							<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+						</additionalProjectnatures>
+						<additionalBuildcommands>
+							<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+						</additionalBuildcommands>
+						<downloadSources>true</downloadSources>
+						<downloadJavadocs>true</downloadJavadocs>
+					</configuration>
+				</plugin>
+				<plugin>
+		    		<groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-antrun-plugin</artifactId>
+			        <version>1.8</version>
+			        <executions>
+			            <execution>
+			            	<id>default-cli</id>
+			            	<phase>generate-sources</phase>
+			            	<configuration>
+			                	<target name="generate" >
+			                		<property name="compile_classpath" refid="maven.compile.classpath"/>
+					                <property name="runtime_classpath" refid="maven.runtime.classpath"/>
+					                <property name="test_classpath" refid="maven.test.classpath"/>
+					                <property name="plugin_classpath" refid="maven.plugin.classpath"/>
+					
+					                <echo message="compile classpath: ${compile_classpath}"/>
+					                <echo message="runtime classpath: ${runtime_classpath}"/>
+					                <echo message="test classpath:    ${test_classpath}"/>
+					                <echo message="plugin classpath:  ${plugin_classpath}"/>
+			                		<echo>Before Generate.</echo>
+			                		<taskdef name="annotationGenerator" classname="com.fantasystep.annotation.AnnotationGenerator" classpath="target/classes"/>
+			                		<annotationGenerator/>
+			                		<echo>After Generate.</echo>
+  								</target>
+			                	<!-- 
+			                	<exec dir="${project.basedir}" executable="${project.basedir}/src/main/sh/do-something.sh" failonerror="true">
+			                  		<arg line="arg1 arg2 arg3 arg4" />
+			                	</exec>
+			                	 -->
+			            	</configuration>
+			            	<goals>
+			                	<goal>run</goal>
+			            	</goals>
+			            </execution>
+			        </executions>
+		            <dependencies>
+		            	<!-- Ant -->
+					    <dependency>
+							<groupId>org.apache.ant</groupId>
+							<artifactId>ant-nodeps</artifactId>
+							<version>1.8.0</version>
+						</dependency>
+						<!-- FantasyStep -->
+						<dependency>
+						    <groupId>com.fantasystep</groupId>
+						    <artifactId>domain</artifactId>
+						    <version>1.0.0</version>
+					    </dependency>
+					</dependencies>
+			    </plugin>
+			    </plugins>
+		</pluginManagement>
+	</build>
+	<!-- 
+    <distributionManagement>
+		<repository>
+			<id>icomds.release</id>
+			<name>Icomds Release Repository</name>
+			<url>http://archiva/archiva/repository/internal</url>
+		</repository>
+		<snapshotRepository>
+			<id>archiva.snapshots</id>
+			<name>Internal Snapshot Repository</name>
+			<url>http://archiva/archiva/repository/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+	 -->
+	<distributionManagement>
+		<repository>
+			<id>fantasystep.release</id>
+			<name>FantasyStep Release Repository</name>
+			<url>http://archiva.fantasystep.com/repository/internal</url>
+		</repository>
+		<snapshotRepository>
+			<id>fantasystep.snapshots</id>
+			<name>FantasyStep Snapshot Repository</name>
+			<url>http://archiva.fantasystep.com/repository/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>

@@ -1,0 +1,608 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.fantasystep</groupId>
+	<artifactId>persistence</artifactId>
+	<name>FantasyTree</name>
+	<packaging>war</packaging>
+	<description>FantasyStep Tree Manager Service</description>
+	<version>1.0.0</version>
+	<properties>
+		<java-version>1.8</java-version>
+		<org.springframework-version>4.0.6.RELEASE</org.springframework-version>
+		<org.aspectj-version>1.7.4</org.aspectj-version>
+		<org.slf4j-version>1.7.5</org.slf4j-version>
+		<cxf.version>2.4.1</cxf.version>
+		<jackson.databind-version>2.2.3</jackson.databind-version>
+		<client-name>treemanager-client</client-name>
+		<glassfish.domain>domain1</glassfish.domain>
+		<glassfish.home>C:\Users\szhang.OFFICE\Downloads\glassfish4\glassfish</glassfish.home>
+		<scala.version>2.10.3</scala.version>
+	</properties>
+	<dependencies>
+		<!-- Mongo -->
+		<dependency>
+			<groupId>org.mongodb</groupId>
+			<artifactId>mongo-java-driver</artifactId>
+			<version>3.10.1</version>
+		</dependency>
+		<!-- Mysql -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.6</version>
+		</dependency>
+
+		<!-- FantasyStep -->
+		<dependency>
+			<groupId>com.fantasystep</groupId>
+			<artifactId>annotation</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fantasystep</groupId>
+			<artifactId>domain</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+	    	<groupId>com.fantasystep</groupId>
+	        <artifactId>syswdomain</artifactId>
+	        <version>1.0.0</version>
+	    </dependency>
+		<dependency>
+			<groupId>com.fantasystep</groupId>
+			<artifactId>utils</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<!-- Jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.databind-version}</version>
+		</dependency>
+		<!-- Spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<!-- 
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${org.springframework-version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-logging</groupId>
+					<artifactId>commons-logging</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency> -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${org.springframework-version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.glassfish.jersey.ext.cdi</groupId>
+		    <artifactId>jersey-cdi1x-validation</artifactId>
+		    <version>2.27</version>
+		</dependency>
+		<!-- AspectJ -->
+		<dependency>
+			<groupId>org.aspectj</groupId>
+			<artifactId>aspectjrt</artifactId>
+			<version>${org.aspectj-version}</version>
+		</dependency>
+		<!-- Logging -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-simple</artifactId> 
+			<version>1.7.5</version> </dependency> -->
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.15</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.mail</groupId>
+					<artifactId>mail</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>javax.jms</groupId>
+					<artifactId>jms</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jdmk</groupId>
+					<artifactId>jmxtools</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.sun.jmx</groupId>
+					<artifactId>jmxri</artifactId>
+				</exclusion>
+			</exclusions>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- Inject -->
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+		</dependency>
+		<!-- Servlet -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.1</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>1.2</version>
+		</dependency>
+		<!-- Scala -->
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-library</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-compiler</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.googlecode.scalascriptengine</groupId>
+			<artifactId>scalascriptengine</artifactId>
+			<version>1.3.9-${scala.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.scala-lang</groupId>
+			<artifactId>scala-reflect</artifactId>
+			<version>${scala.version}</version>
+		</dependency>
+		<!-- CVS -->
+		<dependency>
+			<groupId>net.sf.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>2.0</version>
+		</dependency>
+		<!-- JSON -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20140107</version>
+		</dependency>
+		<!-- J2EE -->
+		<dependency>
+			<groupId>org.glassfish.main.extras</groupId>
+			<artifactId>glassfish-embedded-all</artifactId>
+			<version>3.1.2</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-web-api</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.ejb</groupId>
+			<artifactId>ejb-api</artifactId>
+			<version>3.0</version>
+		</dependency>
+		<dependency>
+			<groupId>javax</groupId>
+			<artifactId>javaee-api</artifactId>
+			<version>6.0</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- Utils -->
+		<dependency>
+			<groupId>org.reflections</groupId>
+			<artifactId>reflections</artifactId>
+			<version>0.9.9-RC1</version>
+		</dependency>
+		<!-- Webservice -->
+		<dependency>
+			<groupId>org.apache.activemq</groupId>
+			<artifactId>activemq-all</artifactId>
+			<version>5.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-frontend-jaxws</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.cxf</groupId>
+			<artifactId>cxf-rt-transports-http</artifactId>
+			<version>${cxf.version}</version>
+		</dependency>
+		<!-- joda-time
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>2.9.4</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.hibernate</groupId>
+		    <artifactId>hibernate-validator-cdi</artifactId>
+		    <version>5.1.0.Beta1</version>
+		</dependency>
+		 -->
+		<!-- <dependency> <groupId>org.apache.cxf</groupId> <artifactId>cxf-rt-transports-http-jetty</artifactId> 
+			<version>${cxf.version}</version> </dependency> -->
+		<!-- Test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- Camel -->
+		<dependency>
+			<groupId>org.apache.camel</groupId>
+			<artifactId>camel-core</artifactId>
+			<version>2.13.2</version>
+		</dependency>
+		<!-- EMF
+		<dependency>
+		    <groupId>org.mod4j.org.eclipse.emf.ecore</groupId>
+		    <artifactId>xmi</artifactId>
+		    <version>2.5.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.emf</groupId>
+		    <artifactId>org.eclipse.emf.common</artifactId>
+		    <version>2.12.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.sphinx</groupId>
+		    <artifactId>emf</artifactId>
+		    <version>0.11.0.201706140911</version>
+		</dependency> -->
+		<!-- Artop
+		<dependency>
+			<groupId>org.artop.aal</groupId>
+			<artifactId>autosar430</artifactId>
+			<version>4.7.0.201710041054</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.aal</groupId>
+			<artifactId>common</artifactId>
+			<version>4.7.0.201710041054</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.aal.gautosar</groupId>
+			<artifactId>services</artifactId>
+			<version>4.7.0.201710041054</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.aal</groupId>
+			<artifactId>gautosar</artifactId>
+			<version>4.7.0.201710041054</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.aal</groupId>
+			<artifactId>serialization</artifactId>
+			<version>4.7.0.201710041054</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.ecuc.autosar40.xtend</groupId>
+			<artifactId>typesystem</artifactId>
+			<version>4.7.0.201710041054</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.eel</groupId>
+			<artifactId>common</artifactId>
+			<version>1.1.0.201706291244</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.eel</groupId>
+			<artifactId>serialization</artifactId>
+			<version>1.1.0.201706291244</version>
+		</dependency>
+		 -->
+	</dependencies>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>glassfish-repository</id>
+			<name>Java.net Repository for Glassfish</name>
+			<url>http://download.java.net/maven/glassfish</url>
+			<layout>default</layout>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>never</updatePolicy>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>maven.java.net</id>
+			<name>Java.net Maven2 Repository</name>
+			<url>http://download.java.net/maven/2</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>maven2-repository.dev.java.net</id>
+			<name>Java.net Repository for Maven</name>
+			<url>http://download.java.net/maven/glassfish/</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<artifactId>maven-eclipse-plugin</artifactId>
+					<version>2.9</version>
+					<configuration>
+						<additionalProjectnatures>
+							<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
+						</additionalProjectnatures>
+						<additionalBuildcommands>
+							<buildcommand>org.springframework.ide.eclipse.core.springbuilder</buildcommand>
+						</additionalBuildcommands>
+						<downloadSources>true</downloadSources>
+						<downloadJavadocs>true</downloadJavadocs>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>2.5.1</version>
+					<configuration>
+						<source>${java-version}</source>
+						<target>${java-version}</target>
+						<compilerArgument>-Xlint:all</compilerArgument>
+						<showWarnings>true</showWarnings>
+						<showDeprecation>true</showDeprecation>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>tomcat-maven-plugin</artifactId>
+					<version>1.1</version>
+					<configuration>
+						<path>/fantasytree</path>
+						<url>https://${tomcat.server}/manager</url>
+						<server>visionlab</server>
+						<systemProperties>
+							<org.apache.catalina.loader.WebappClassLoader.ENABLE_CLEAR_REFERENCES>false</org.apache.catalina.loader.WebappClassLoader.ENABLE_CLEAR_REFERENCES>
+						</systemProperties>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.2</version>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+						<!-- <webXml>WebContent\WEB-INF\web.xml</webXml> -->
+						<packagingExcludes>
+							WEB-INF/lib/joda*.jar,
+						</packagingExcludes>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>exec-maven-plugin</artifactId>
+					<version>1.2.1</version>
+					<configuration>
+						<mainClass>org.test.int1.Main</mainClass>
+					</configuration>
+				</plugin>
+				<!-- Antrun -->
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-antrun-plugin</artifactId>
+					<version>1.7</version>
+					<executions>
+						<execution>
+							<id>default-cli</id>
+							<phase>generate-sources</phase>
+							<configuration>
+								<target name="publish">
+									<delete file="target/${client-name}-${project.version}.jar" />
+									<jar destfile="target/${client-name}-${project.version}.jar">
+										<fileset dir="target/classes/" casesensitive="yes"
+											includes="com/fantasystep/persistence/client/*.class" />
+										<fileset dir="target/classes/" casesensitive="yes"
+											includes="com/fantasystep/persistence/exception/*.class" />
+										<fileset dir="target/classes/" casesensitive="yes"
+											includes="com/fantasystep/persistence/TreeManager*.class" />
+										<!-- <zipgroupfileset dir="target/${project.artifactId}-${project.version}/WEB-INF/lib" 
+											includes="domain*.jar"/> -->
+										<manifest>
+											<attribute name="Author" value="Songhe" />
+										</manifest>
+									</jar>
+									<echo>Before Generate.</echo>
+									<taskdef name="treeManagerGenerator"
+										classname="com.fantasystep.persistence.generator.TreeManagerHolderGenerator"
+										classpath="target/classes" />
+									<treeManagerGenerator />
+									<echo>After Generate.</echo>
+									<exec executable="mvn${script.extension}">
+										<arg value="deploy:deploy-file" />
+										<arg value="-DgroupId=${project.groupId}" />
+										<arg value="-DartifactId=${client-name}" />
+										<arg value="-Dversion=${project.version}" />
+										<arg value="-Dpackaging=jar" />
+										<arg value="-Dfile=target/${client-name}-${project.version}.jar" />
+										<arg
+											value="-Durl=http://archiva.fantasystep.com/repository/internal/" />
+										<arg value="-DrepositoryId=fantasystep.release" />
+									</exec>
+								</target>
+							</configuration>
+							<goals>
+								<goal>run</goal>
+							</goals>
+						</execution>
+					</executions>
+					<dependencies>
+						<!-- Ant -->
+						<dependency>
+							<groupId>org.apache.ant</groupId>
+							<artifactId>ant-nodeps</artifactId>
+							<version>1.8.0</version>
+						</dependency>
+						<!-- FantasyStep -->
+						<dependency>
+							<groupId>com.fantasystep</groupId>
+							<artifactId>domain</artifactId>
+							<version>1.0.0</version>
+						</dependency>
+						<dependency>
+							<groupId>com.fantasystep</groupId>
+							<artifactId>syswdomain</artifactId>
+							<version>1.0.0</version>
+						</dependency>
+						<dependency>
+							<groupId>com.fantasystep</groupId>
+							<artifactId>utils</artifactId>
+							<version>1.0.0</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+				<!-- Glassfish -->
+				<plugin>
+					<groupId>org.glassfish.maven.plugin</groupId>
+					<artifactId>maven-glassfish-plugin</artifactId>
+					<version>2.1</version>
+					<configuration>
+						<glassfishDirectory>${glassfish.home}</glassfishDirectory>
+						<user>admin</user>
+						<!-- <passwordFile>${local.glassfish.passfile}</passwordFile> -->
+						<adminPassword>admin</adminPassword>
+						<autoCreate>true</autoCreate>
+						<debug>true</debug>
+						<echo>false</echo>
+						<terse>true</terse>
+						<domain>
+							<!-- <host>tree.fantasystep.com</host> -->
+							<name>${glassfish.domain}</name>
+							<adminPort>4848</adminPort>
+							<httpPort>8080</httpPort>
+							<httpsPort>8181</httpsPort>
+							<iiopPort>3700</iiopPort>
+							<jmsPort>7676</jmsPort>
+							<reuse>false</reuse>
+						</domain>
+						<components>
+							<component>
+								<name>${project.artifactId}</name>
+								<artifact>
+									${project.build.directory}/${project.build.finalName}.war
+								</artifact>
+							</component>
+						</components>
+					</configuration>
+				</plugin>
+				<!-- Cargo -->
+				<plugin>
+					<groupId>org.codehaus.cargo</groupId>
+					<artifactId>cargo-maven2-plugin</artifactId>
+					<version>1.4.9</version>
+					<configuration>
+						<container>
+							<containerId>glassfish4x</containerId>
+							<type>remote</type>
+						</container>
+						<configuration>
+							<type>runtime</type>
+							<properties>
+								<cargo.glassfish.domain.name>domain1</cargo.glassfish.domain.name>
+								<cargo.glassfish.adminPort>4848</cargo.glassfish.adminPort>
+								<cargo.protocol>https</cargo.protocol>
+								<cargo.hostname>tree.fantasystep.com</cargo.hostname>
+								<cargo.servlet.port>8080</cargo.servlet.port>
+								<cargo.remote.username>admin</cargo.remote.username>
+								<cargo.remote.password>admin</cargo.remote.password>
+							</properties>
+						</configuration>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>org.glassfish.deployment</groupId>
+							<artifactId>deployment-client</artifactId>
+							<version>3.2-b06</version>
+						</dependency>
+					</dependencies>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+	<profiles>
+		<profile>
+			<id>Windows</id>
+			<activation>
+				<os>
+					<family>Windows</family>
+				</os>
+			</activation>
+			<properties>
+				<script.extension>.bat</script.extension>
+			</properties>
+		</profile>
+		<profile>
+			<id>unix</id>
+			<activation>
+				<os>
+					<family>unix</family>
+				</os>
+			</activation>
+			<properties>
+				<script.extension>.sh</script.extension>
+			</properties>
+		</profile>
+		<profile>
+			<id>mac</id>
+			<activation>
+				<os>
+					<family>mac</family>
+				</os>
+			</activation>
+			<properties>
+				<script.extension></script.extension>
+			</properties>
+		</profile>
+	</profiles>
+	<repositories>
+		<repository>
+			<id>sonatype.releases</id>
+			<url>https://oss.sonatype.org/content/repositories/releases/</url>
+		</repository>
+	</repositories>
+	<distributionManagement>
+		<repository>
+			<id>fantasystep.release</id>
+			<name>FantasyStep Release Repository</name>
+			<url>http://archiva.fantasystep.com/repository/internal</url>
+		</repository>
+		<snapshotRepository>
+			<id>fantasystep.snapshots</id>
+			<name>FantasyStep Snapshot Repository</name>
+			<url>http://archiva.fantasystep.com/repository/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>

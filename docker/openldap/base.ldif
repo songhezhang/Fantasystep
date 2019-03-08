@@ -1,0 +1,21 @@
+dn: dc=fantasystep,dc=com
+objectClass: dcObject
+objectClass: organization
+dc: fantasystep
+o : fantasystep
+
+dn: cn=admin,dc=fantasystep,dc=com
+objectClass: organizationalRole
+cn: admin
+description: administrator
+
+dn: ou=people,dc=fantasystep,dc=com
+objectClass: organizationalUnit
+ou: people
+
+dn: ou=groups,dc=fantasystep,dc=com
+objectClass: organizationalUnit
+ou: groups
+
+olcRootDN: cn=admin,cn=config
+olcRootPW: welcome0

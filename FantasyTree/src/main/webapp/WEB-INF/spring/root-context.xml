@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:jee="http://www.springframework.org/schema/jee" 
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:cxf="http://cxf.apache.org/core"	
+	   xmlns:jaxws="http://cxf.apache.org/jaxws"
+	   xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd   
+				http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd   
+				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+				http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee.xsd   
+				http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+         		http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+         		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
+	<context:component-scan base-package="com.fantasystep.persistence">
+		<context:exclude-filter expression=".*_Roo_.*"
+			type="regex" />
+		<context:exclude-filter expression="org.springframework.stereotype.Controller"
+			type="annotation" />
+	</context:component-scan>
+	
+	<import resource="classpath:META-INF/cxf/cxf.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-extension-soap.xml" />
+	<import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+	
+	<!-- <jee:local-slsb id="persistenceManager" jndi-name="ejb/pmEjb" business-interface="com.fantasystep.persistence.PersistenceProxy"/> -->
+	<bean id="persistenceManager" class="com.fantasystep.persistence.PersistenceProxy"/>
+	<bean id="sessionManager" class="com.fantasystep.persistence.session.SessionManager"/>
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	<!-- 
+	<bean id="applicationProperties" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="location">
+			<value>classpath*:WEB-INF/spring/fantasystep-context.properties</value>
+		</property>
+	</bean>
+	 -->
+	<bean id="FantasyStepTreeManagerBean" class="com.fantasystep.persistence.FantasyStepTreeManager"/>
+  	<jaxws:endpoint id="treeManager" implementor="#FantasyStepTreeManagerBean" address="/TreeManagerService">
+       	<jaxws:properties>
+   			<entry key="faultStackTraceEnabled" value="true" />
+   			<entry key="exceptionMessageCauseEnabled" value="true" />
+		</jaxws:properties>
+    </jaxws:endpoint>
+</beans>

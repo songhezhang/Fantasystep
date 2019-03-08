@@ -1,0 +1,153 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<groupId>com.fantasystep</groupId>
+	<artifactId>domain</artifactId>
+	<version>1.0.0</version>
+	<packaging>jar</packaging>
+	
+	<name>Fantasy Domain</name>
+	<url>http://maven.apache.org</url>
+	
+	<properties>
+	  <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	  <jackson.databind-version>2.2.3</jackson.databind-version>
+	</properties>
+
+	<dependencies>
+    	<!-- Jackson
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.databind-version}</version>
+		</dependency> -->
+	    <dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>3.8.1</version>
+			<scope>test</scope>
+	    </dependency>
+	    <!-- J2EE -->
+		<dependency>
+	        <groupId>org.glassfish.main.extras</groupId>
+	        <artifactId>glassfish-embedded-all</artifactId>
+	        <version>3.1.2</version>
+	        <scope>provided</scope>
+	    </dependency>
+	    <!-- EMF -->
+		<dependency>
+		    <groupId>org.mod4j.org.eclipse.emf.ecore</groupId>
+		    <artifactId>xmi</artifactId>
+		    <version>2.5.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.emf</groupId>
+		    <artifactId>org.eclipse.emf.common</artifactId>
+		    <version>2.12.0</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.emf</groupId>
+		    <artifactId>org.eclipse.emf.ecore</artifactId>
+		    <version>2.12.0</version>
+		</dependency>
+		<!-- Eclipsex
+		<dependency>
+		    <groupId>org.eclipse.core</groupId>
+		    <artifactId>resources</artifactId>
+		    <version>3.5.7</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.sphinx</groupId>
+		    <artifactId>emf</artifactId>
+		    <version>0.11.0.201706140911</version>
+		</dependency> -->
+		<!-- Artop -->
+		<dependency>
+			<groupId>org.artop.aal</groupId>
+			<artifactId>autosar430</artifactId>
+			<version>4.7.0.201710041054</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.aal</groupId>
+			<artifactId>common</artifactId>
+			<version>4.7.0.201710041054</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.aal.gautosar</groupId>
+			<artifactId>services</artifactId>
+			<version>4.7.0.201710041054</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.aal</groupId>
+			<artifactId>gautosar</artifactId>
+			<version>4.7.0.201710041054</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.aal</groupId>
+			<artifactId>serialization</artifactId>
+			<version>4.7.0.201710041054</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.ecuc.autosar40.xtend</groupId>
+			<artifactId>typesystem</artifactId>
+			<version>4.7.0.201710041054</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.eel</groupId>
+			<artifactId>common</artifactId>
+			<version>1.1.0.201706291244</version>
+		</dependency>
+		<dependency>
+			<groupId>org.artop.eel</groupId>
+			<artifactId>serialization</artifactId>
+			<version>1.1.0.201706291244</version>
+		</dependency>
+		<!--
+		<dependency>
+		    <groupId>org.emfjson</groupId>
+		    <artifactId>emfjson-jackson</artifactId>
+		    <version>1.0.0</version>
+		</dependency> -->
+    </dependencies>
+    <build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<configuration>
+						<source>1.8</source>
+						<target>1.8</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+    <!-- 
+    <distributionManagement>
+		<repository>
+			<id>icomds.release</id>
+			<name>Icomds Release Repository</name>
+			<url>http://archiva/archiva/repository/internal</url>
+		</repository>
+		<snapshotRepository>
+			<id>archiva.snapshots</id>
+			<name>Internal Snapshot Repository</name>
+			<url>http://archiva/archiva/repository/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+	 -->
+	<distributionManagement>
+		<repository>
+			<id>fantasystep.release</id>
+			<name>FantasyStep Release Repository</name>
+			<url>http://archiva.fantasystep.com/repository/internal</url>
+		</repository>
+		<snapshotRepository>
+			<id>fantasystep.snapshots</id>
+			<name>FantasyStep Snapshot Repository</name>
+			<url>http://archiva.fantasystep.com/repository/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
+</project>

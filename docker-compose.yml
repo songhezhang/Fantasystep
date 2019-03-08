@@ -1,0 +1,168 @@
+version: '3'
+
+services:
+
+  glassfish:
+    #image: pdbs/glassfish
+    build: ./docker/glassfish
+    #image: glassfish
+    container_name: glassfish
+    environment:
+      GF_ADMINPASSWORD: fantasystep
+      GF_MASTERPASSWORD: fantasystep
+    ports:
+      - 8080:8080
+      - 8081:8081
+      - 4848:4848
+    expose:
+      - 8080
+      - 8081
+      - 4848
+    links:
+      - mysql
+      - ldap
+      - mongodb
+    depends_on:
+      - mysql
+      - ldap
+      - mongodb
+    volumes:
+      - /c/fantasystep/glassfish/glassfish-init:/docker-entrypoint-glassfish.d
+    networks:
+      - dockernet
+
+  mysql:
+    image: mysql:5.7
+    container_name: mysql
+    volumes:
+      - /c/fantasystep/mysql:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: fantasystep
+      MYSQL_DATABASE: fantasystep
+      MYSQL_USER: fantasystep
+      MYSQL_PASSWORD: fantasystep
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    networks:
+      - dockernet
+  
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin
+    links:
+      - mysql
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+    ports:
+      - '8085:80'
+    networks:
+      - dockernet
+
+  # ldap:
+  #   hostname: ldap.fantasystep.com
+  #   domainname: ldap.fantasystep.com
+  #   container_name: ldap
+  #   image: osixia/openldap
+  #   ports:
+  #     - 389:389
+  #     - 636:636
+  #   environment:
+  #     - LDAP_DOMAIN=fantasystep.com
+  #     - LDAP_ADMIN_PASSWORD=admin
+  #     - LDAP_CONFIG_PASSWORD=config
+  #     - LDAP_BACKEND=mdb
+
+  #     - LDAP_BASE_DN=dc=fantasystep,dc=com
+  #     - LDAP_READONLY_USER_USERNAME=reader
+  #     - LDAP_READONLY_USER_PASSWORD=reader
+  #   tty: true
+  #   stdin_open: true
+  #   volumes:
+  #     - /c/fantasystep/ldap/backup:/data/backup
+  #     - /c/fantasystep/ldap/data:/var/lib/openldap
+  #     - /c/fantasystep/ldap/config:/etc/openldap/slapd.d
+  #   restart: always
+  #   expose:
+  #     - 389
+  #     - 636
+  #   networks:
+  #     - dockernet
+  ldap:
+    hostname: ldap.fantasystep.com
+    domainname: ldap.fantasystep.com
+    container_name: ldap
+    build: ./docker/openldap
+    ports:
+      - 389:389
+      - 636:636
+    environment:
+      - LDAP_ROOT_PASSWORD=admin
+      - LDAP_MANAGER_PASSWORD=admin
+    tty: true
+    stdin_open: true
+    restart: always
+    volumes:
+      - /c/fantasystep/ldap/data/lib:/data/lib
+      - /c/fantasystep/ldap/data/etc:/data/etc
+    expose:
+      - 389
+      - 636
+    networks:
+      - dockernet
+
+  phpldapadmin:
+    image: osixia/phpldapadmin:latest
+    container_name: phpldapadmin
+    environment:
+      PHPLDAPADMIN_LDAP_HOSTS: ldap
+      PHPLDAPADMIN_HTTPS: "false"
+    ports:
+      - 8088:80
+    depends_on:
+      - ldap
+    expose:
+      - 8088
+    networks:
+      - dockernet
+
+  mongodb:
+    image: mongo:latest
+    container_name: "mongodb"
+    environment:
+      - AUTH=yes
+      - MONGO_DATA_DIR=/data/db
+      - MONGO_LOG_DIR=/dev/null
+      - MONGODB_USER=fantasystep
+      - MONGODB_PASS=fantasystep
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=fantasystep
+      - MONGO_INITDB_DATABASE=fantasystep
+    volumes:
+      - /c/fantasystep/mongodb/data/db:/data/db
+    ports:
+      - 27017:27017
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+    restart: always
+    expose:
+      - 27017
+    networks:
+      - dockernet
+
+  mongoclient:
+    image: mongoclient/mongoclient:latest
+    container_name: mongoclient
+    hostname: mongoclient
+    depends_on:
+      - mongodb
+    networks:
+      - dockernet
+    ports:
+      - 3300:3000
+
+networks:
+    dockernet:
+        external: true

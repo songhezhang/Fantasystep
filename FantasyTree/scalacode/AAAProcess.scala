@@ -1,0 +1,1 @@
+package com.fantasystep.persistence.process;import org.json.JSONObject;class AAAProcess extends ProcessTrait {def process(name: String, input: JSONObject) = {println('a');new JSONObject();}}
