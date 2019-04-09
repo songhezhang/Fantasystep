@@ -77,6 +77,12 @@
 	background: #f5f5f5;
 }
 
+.mytheme .v-context-menu-container {
+	max-height: 1000px;
+	max-width: 500px;
+	overflow-y: auto !important;
+}
+
 .mytheme .v-context-menu {
 	float: left;
 	font-family: Arial;

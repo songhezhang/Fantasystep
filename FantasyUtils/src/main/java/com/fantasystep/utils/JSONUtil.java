@@ -2,8 +2,8 @@ package com.fantasystep.utils;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +14,7 @@ import org.json.JSONObject;
 public class JSONUtil {
 	
     public static Map<String, Object> toMap(JSONObject object) throws JSONException {
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
         if(object == JSONObject.NULL)
             return map;
         @SuppressWarnings("unchecked")

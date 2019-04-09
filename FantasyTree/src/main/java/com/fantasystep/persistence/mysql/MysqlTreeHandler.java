@@ -51,7 +51,6 @@ public class MysqlTreeHandler extends MysqlHandler implements TreeHandler
 					nodeType = Node.class;
 				}
 			}
-			logger.info("===========" + nodeData.get( "id" ).toString() + "============" + nodeType.getCanonicalName());
 			node = nodeType.newInstance();
 			node.setId( UUID.fromString( nodeData.get( "id" ).toString() ) );
 			node.setDeleted( Boolean.valueOf( nodeData.get( "deleted" ).toString() ) );

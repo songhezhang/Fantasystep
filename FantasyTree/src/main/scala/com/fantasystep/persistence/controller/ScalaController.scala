@@ -119,7 +119,7 @@ class ScalaController {
     logger.info("Start getNode. ID=" + id)
     val clazz = NodeClassUtil.getDynamicEntityClassByFullName(packagePath + name)
     val map = persistenceManager.getDynamicStorageHandler().read(clazz, id, null)
-    JSONUtil.toJSON(map).toString()
+    JSON2NodeUtil.object2Json(map)
   }
 
   @RequestMapping(value = Array("/rest/all/{name}"), method = Array(RequestMethod.GET))
@@ -130,7 +130,7 @@ class ScalaController {
     val clazz = NodeClassUtil.getDynamicEntityClassByFullName(packagePath + name)
     val ids: java.util.List[UUID] = new ArrayList[UUID]
     val map = persistenceManager.getDynamicStorageHandler().read(clazz, ids, null)
-    new JSONObject(map).toString()
+    JSON2NodeUtil.object2Json(map)
   }
 
   @RequestMapping(value = Array("/rest/create/{name}"), method = Array(RequestMethod.POST))

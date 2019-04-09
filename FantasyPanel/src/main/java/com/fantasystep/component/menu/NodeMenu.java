@@ -17,7 +17,6 @@ import com.fantasystep.container.AbstractCContainer.FormMode;
 import com.fantasystep.container.single.SingleNodeCContainer;
 import com.fantasystep.domain.DynamicDomain;
 import com.fantasystep.domain.Entity;
-import com.fantasystep.domain.EntityGroup;
 import com.fantasystep.domain.Node;
 import com.fantasystep.form.CFormFactory;
 import com.fantasystep.form.NodeWizardCForm;

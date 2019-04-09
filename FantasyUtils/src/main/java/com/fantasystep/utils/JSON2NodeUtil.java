@@ -7,8 +7,8 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -72,7 +72,7 @@ public class JSON2NodeUtil {
 
 						JSONArray array = fieldsJson.getJSONArray(field
 								.getName());
-						if (field.getAnnotation(FantasyStep.class).listType() == HashMap.class) {
+						if (Map.class.isAssignableFrom(field.getAnnotation(FantasyStep.class).listType())) {
 							list.addAll(JSONUtil.toList(array));
 						} else {
 							for (int i = 0; i < array.length(); i++)
@@ -88,7 +88,7 @@ public class JSON2NodeUtil {
 						Set<Object> set = new HashSet<Object>();
 						JSONArray array = fieldsJson.getJSONArray(field
 								.getName());
-						if (field.getAnnotation(FantasyStep.class).listType() == HashMap.class) {
+						if (Map.class.isAssignableFrom(field.getAnnotation(FantasyStep.class).listType())) {
 							set.addAll(JSONUtil.toList(array));
 						} else {
 							for (int i = 0; i < array.length(); i++)
@@ -107,12 +107,12 @@ public class JSON2NodeUtil {
 							.getName());
 					try {
 						map = new ObjectMapper().readValue(new StringReader(
-								object.toString()), HashMap.class);
+								object.toString()), LinkedHashMap.class);
 						if (field.getAnnotation(FantasyStep.class).mapType().length == 1) {
 							Class<?> valueClass = field.getAnnotation(
 									FantasyStep.class).mapType()[0];
 							if (Node.class.isAssignableFrom(valueClass)) {
-								Map<Object, Node> newMap = new HashMap<Object, Node>();
+								Map<Object, Node> newMap = new LinkedHashMap<Object, Node>();
 								for (Entry<Object, Object> entry : map
 										.entrySet()) {
 									newMap.put(
@@ -126,7 +126,7 @@ public class JSON2NodeUtil {
 								}
 								field.set(node, newMap);
 							} else {
-								Map<Object, Object> newMap = new HashMap<Object, Object>();
+								Map<Object, Object> newMap = new LinkedHashMap<Object, Object>();
 								for (Entry<Object, Object> entry : map
 										.entrySet()) {
 									newMap.put(
@@ -148,7 +148,7 @@ public class JSON2NodeUtil {
 									FantasyStep.class).mapType()[1];
 							if (Node.class.isAssignableFrom(keyClass)
 									&& Node.class.isAssignableFrom(valueClass)) {
-								Map<Node, Node> newMap = new HashMap<Node, Node>();
+								Map<Node, Node> newMap = new LinkedHashMap<Node, Node>();
 								for (Entry<Object, Object> entry : map
 										.entrySet())
 									newMap.put(
@@ -163,7 +163,7 @@ public class JSON2NodeUtil {
 													(Class<? extends Node>) valueClass));
 								field.set(node, newMap);
 							} else if (Node.class.isAssignableFrom(keyClass)) {
-								Map<Node, Object> newMap = new HashMap<Node, Object>();
+								Map<Node, Object> newMap = new LinkedHashMap<Node, Object>();
 								for (Entry<Object, Object> entry : map
 										.entrySet())
 									newMap.put(
@@ -178,7 +178,7 @@ public class JSON2NodeUtil {
 													valueClass));
 								field.set(node, newMap);
 							} else if (Node.class.isAssignableFrom(valueClass)) {
-								Map<Object, Node> newMap = new HashMap<Object, Node>();
+								Map<Object, Node> newMap = new LinkedHashMap<Object, Node>();
 								for (Entry<Object, Object> entry : map
 										.entrySet())
 									newMap.put(
@@ -192,7 +192,7 @@ public class JSON2NodeUtil {
 													(Class<? extends Node>) valueClass));
 								field.set(node, newMap);
 							} else {
-								Map<Object, Object> newMap = new HashMap<Object, Object>();
+								Map<Object, Object> newMap = new LinkedHashMap<Object, Object>();
 								for (Entry<Object, Object> entry : map
 										.entrySet())
 									newMap.put(
@@ -287,7 +287,7 @@ public class JSON2NodeUtil {
 						List<Object> list = new ArrayList<Object>();
 						JSONArray array = fieldsJson.getJSONArray(field
 								.getName());
-						if (field.getAnnotation(FantasyStep.class).listType() == HashMap.class) {
+						if (Map.class.isAssignableFrom(field.getAnnotation(FantasyStep.class).listType())) {
 							list.addAll(JSONUtil.toList(array));
 						} else {
 							for (int i = 0; i < array.length(); i++)
@@ -304,7 +304,7 @@ public class JSON2NodeUtil {
 						Set<Object> set = new HashSet<Object>();
 						JSONArray array = fieldsJson.getJSONArray(field
 								.getName());
-						if (field.getAnnotation(FantasyStep.class).listType() == HashMap.class) {
+						if (Map.class.isAssignableFrom(field.getAnnotation(FantasyStep.class).listType())) {
 							set.addAll(JSONUtil.toList(array));
 						} else {
 							for (int i = 0; i < array.length(); i++)
@@ -324,12 +324,12 @@ public class JSON2NodeUtil {
 							.getName());
 					try {
 						map = new ObjectMapper().readValue(new StringReader(
-								object.toString()), HashMap.class);
+								object.toString()), LinkedHashMap.class);
 						if (field.getAnnotation(FantasyStep.class).mapType().length == 1) {
 							Class<?> valueClass = field.getAnnotation(
 									FantasyStep.class).mapType()[0];
 							if (Node.class.isAssignableFrom(valueClass)) {
-								Map<Object, Node> newMap = new HashMap<Object, Node>();
+								Map<Object, Node> newMap = new LinkedHashMap<Object, Node>();
 								for (Entry<Object, Object> entry : map
 										.entrySet()) {
 									newMap.put(
@@ -343,7 +343,7 @@ public class JSON2NodeUtil {
 								}
 								field.set(obj, newMap);
 							} else {
-								Map<Object, Object> newMap = new HashMap<Object, Object>();
+								Map<Object, Object> newMap = new LinkedHashMap<Object, Object>();
 								for (Entry<Object, Object> entry : map
 										.entrySet()) {
 									newMap.put(
@@ -365,7 +365,7 @@ public class JSON2NodeUtil {
 									FantasyStep.class).mapType()[1];
 							if (Node.class.isAssignableFrom(keyClass)
 									&& Node.class.isAssignableFrom(valueClass)) {
-								Map<Node, Node> newMap = new HashMap<Node, Node>();
+								Map<Node, Node> newMap = new LinkedHashMap<Node, Node>();
 								for (Entry<Object, Object> entry : map
 										.entrySet())
 									newMap.put(
@@ -380,7 +380,7 @@ public class JSON2NodeUtil {
 													(Class<? extends Node>) valueClass));
 								field.set(obj, newMap);
 							} else if (Node.class.isAssignableFrom(keyClass)) {
-								Map<Node, Object> newMap = new HashMap<Node, Object>();
+								Map<Node, Object> newMap = new LinkedHashMap<Node, Object>();
 								for (Entry<Object, Object> entry : map
 										.entrySet())
 									newMap.put(
@@ -395,7 +395,7 @@ public class JSON2NodeUtil {
 													valueClass));
 								field.set(obj, newMap);
 							} else if (Node.class.isAssignableFrom(valueClass)) {
-								Map<Object, Node> newMap = new HashMap<Object, Node>();
+								Map<Object, Node> newMap = new LinkedHashMap<Object, Node>();
 								for (Entry<Object, Object> entry : map
 										.entrySet())
 									newMap.put(
@@ -409,7 +409,7 @@ public class JSON2NodeUtil {
 													(Class<? extends Node>) valueClass));
 								field.set(obj, newMap);
 							} else {
-								Map<Object, Object> newMap = new HashMap<Object, Object>();
+								Map<Object, Object> newMap = new LinkedHashMap<Object, Object>();
 								for (Entry<Object, Object> entry : map
 										.entrySet())
 									newMap.put(

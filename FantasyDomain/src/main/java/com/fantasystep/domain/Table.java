@@ -24,7 +24,7 @@ public class Table extends Node {
 	
 	@FantasyStep(storage = Storage.MONGO)
 	@FantasyView(controlType = ControlType.CHECKBOX, order = 2, group = PropertyGroups.BASE_PROPERTY, label = "LABEL_NEED_AUTHENTICATION")
-	private boolean needAuthentication = false;
+	private Boolean needAuthentication = false;
 	
 	@Override
 	public String getLabel() {
@@ -45,11 +45,11 @@ public class Table extends Node {
 		this.tableName = tableName;
 	}
 
-	public boolean getNeedAuthentication() {
+	public Boolean getNeedAuthentication() {
 		return needAuthentication;
 	}
 
-	public void setNeedAuthentication(boolean needAuthentication) {
+	public void setNeedAuthentication(Boolean needAuthentication) {
 		this.needAuthentication = needAuthentication;
 	}
 }

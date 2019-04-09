@@ -21,7 +21,6 @@ import com.fantasystep.persistence.TreeManagerSubclassHolder;
 import com.fantasystep.utils.JCompiler;
 import com.fantasystep.utils.NodeClassUtil;
 import com.fantasystep.utils.NodeUtil;
-import com.vaadin.annotations.JavaScript;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
@@ -35,7 +34,7 @@ import com.vaadin.shared.ui.ui.Transport;
 @PreserveOnRefresh
 @Push(value = PushMode.MANUAL, transport = Transport.STREAMING)
 @Title("FantasyStep")
-@JavaScript("https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js")
+//@JavaScript("https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js")
 @Theme("mytheme")
 public class CApplication extends AbstractCApplication {
 	

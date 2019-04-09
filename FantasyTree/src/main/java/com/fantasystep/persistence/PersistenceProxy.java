@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -192,7 +192,7 @@ public class PersistenceProxy
 
 		( (User) node ).setActivated( true );
 
-		Map<String,Object> map = new HashMap<String,Object>();
+		Map<String,Object> map = new LinkedHashMap<String,Object>();
 		map.put( "activated", "TRUE" );
 
 		getStorageHandlerList().get( Storage.MYSQL ).update( node.getClass(), node.getId(), map );
@@ -311,7 +311,7 @@ public class PersistenceProxy
 			{
 				List<UUID> list = new ArrayList<UUID>();
 				StorageHandler sh = getStorageHandlerList().get( DomainFieldManager.getInstance().getStorageForSubNode() );
-				Map<String, Object> map = new HashMap<String, Object>();
+				Map<String, Object> map = new LinkedHashMap<String, Object>();
 				map.put("parentId", node.getId());
 				list.addAll(sh.read(node.getClass(), new ArrayList<UUID>(), map).keySet());
 				sh.destroy( destroyNode.getClass(), list );
@@ -320,14 +320,14 @@ public class PersistenceProxy
 			 * Second destroy all the nodes properties in all storages along the node tree.
 			 */
 			Map<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>> solutions = splitDataGroupForInsert( nodeList );
-			Map<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>> backup = new HashMap<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>>();
+			Map<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>> backup = new LinkedHashMap<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>>();
 			PersistenceException e = null;
 
 			done: for( Entry<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>> solution : solutions.entrySet() )
 			{
 				Storage s = solution.getKey();
 				Map<Class<? extends Node>,Map<UUID,Map<String,Object>>> items = solution.getValue();
-				backup.put( s, new HashMap<Class<? extends Node>,Map<UUID,Map<String,Object>>>() );
+				backup.put( s, new LinkedHashMap<Class<? extends Node>,Map<UUID,Map<String,Object>>>() );
 
 				for( Entry<Class<? extends Node>,Map<UUID,Map<String,Object>>> item : items.entrySet() )
 				{
@@ -479,7 +479,7 @@ public class PersistenceProxy
 		if( uuid == null || nodeInCache == null )
 			throw new IdNotFoundException( String.format( "Could not find node with id: %s", uuid ) );
 
-		Map<String,Object> rawData = new HashMap<String,Object>();
+		Map<String,Object> rawData = new LinkedHashMap<String,Object>();
 		for( Storage s : getStoragesByNodeClass( nodeInCache.getClass() ) )
 		{
 
@@ -545,10 +545,10 @@ public class PersistenceProxy
 	{
 		
 		/** Initialize the raw data */
-		Map<Storage,Map<UUID,Map<String,Object>>> rawData = new HashMap<Storage,Map<UUID,Map<String,Object>>>();
+		Map<Storage,Map<UUID,Map<String,Object>>> rawData = new LinkedHashMap<Storage,Map<UUID,Map<String,Object>>>();
 
 		for( Storage s : getStorageHandlerList().keySet() )
-			rawData.put( s, new HashMap<UUID,Map<String,Object>>() );
+			rawData.put( s, new LinkedHashMap<UUID,Map<String,Object>>() );
 
 		/** Split the data categorized by storage and node class */
 		Map<Storage,Map<Class<? extends Node>,List<UUID>>> solutions = splitDataGroupByIDs( nodeList );
@@ -597,9 +597,9 @@ public class PersistenceProxy
 	private void loadDynamicEntities() {
 		logger.info( "Load Dynamic Classes ..." );
 		try {
-			Map<String, String> allSourceCodes = new HashMap<String, String>();
+			Map<String, String> allSourceCodes = new LinkedHashMap<String, String>();
 			List<String> noneAbstractDynamicClassNames = new ArrayList<String>();
-			Map<String, Class<? extends Node>> dynamicClasses = new HashMap<String, Class<? extends Node>>();
+			Map<String, Class<? extends Node>> dynamicClasses = new LinkedHashMap<String, Class<? extends Node>>();
 			for (Map<String, Object> map : getStorageHandlerList().get(
 					AnnotationsParser.getAttributes(Entity.class, "sourceCode")
 							.getStorage()).read(Entity.class,
@@ -620,7 +620,7 @@ public class PersistenceProxy
 	}
 	
 	private boolean testEntity(String newClassName, String newClassCode) {
-		Map<String, String> allSourceCodes = new HashMap<String, String>();
+		Map<String, String> allSourceCodes = new LinkedHashMap<String, String>();
 		try {
 			for (Map<String, Object> map : getStorageHandlerList().get(
 					AnnotationsParser.getAttributes(Entity.class, "sourceCode")
@@ -828,7 +828,7 @@ public class PersistenceProxy
 
 	private Map<UUID,Node> indexList( List<? extends Node> nodeList )
 	{
-		Map<UUID,Node> result = new HashMap<UUID,Node>();
+		Map<UUID,Node> result = new LinkedHashMap<UUID,Node>();
 		for( Node node : nodeList )
 			result.put( node.getId(), node );
 		return result;
@@ -842,7 +842,7 @@ public class PersistenceProxy
 		logger.info( "INITIALIZING: " + hashCode() );
 //		Environment.addProperty( VolatileFile.STORAGE_LOCATION_PROPERTY, "/var/lib/fantasystep/treemanager" );
 
-		setStorageHandlerList( new HashMap<Storage,StorageHandler>() );
+		setStorageHandlerList( new LinkedHashMap<Storage,StorageHandler>() );
 		getStorageHandlerList().put( Storage.MYSQL, new MysqlStorageHandler() );
 		getStorageHandlerList().put( Storage.MONGO, new MongoStorageHandler() );
 		getStorageHandlerList().put( Storage.LDAP, new LDAPStorageHandler() );
@@ -893,10 +893,10 @@ public class PersistenceProxy
 			return;
 		}
 
-		for(Node node : nodeList) {
+		
+		for(Node node : nodeList) 
 			if(node instanceof DynamicDomain || ( node.getClass().equals(Node.class) && node.getSerializationNode() != null))
 				node = JSON2NodeUtil.json2Node(node.getSerializationNode(), NodeClassUtil.getDynamicEntityClassByFullName(new JSONObject(node.getSerializationNode()).get("type").toString()));
-		}
 		List<Node> subNodeList = new ArrayList<Node>();
 		List<Node> mongoNodeList = new ArrayList<Node>();
 		List<Node> commonNodeList = new ArrayList<Node>();
@@ -930,14 +930,14 @@ public class PersistenceProxy
 			for( Node node : commonNodeList )
 				onPreInsert( node, transactionId, executor );
 			Map<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>> solutions = splitDataGroupForInsert( commonNodeList );
-			Map<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>> backup = new HashMap<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>>();
+			Map<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>> backup = new LinkedHashMap<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>>();
 			PersistenceException e = null;
 
 			done: for( Entry<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>> solution : solutions.entrySet() )
 			{
 				Storage s = solution.getKey();
 				Map<Class<? extends Node>,Map<UUID,Map<String,Object>>> items = solution.getValue();
-				backup.put( s, new HashMap<Class<? extends Node>,Map<UUID,Map<String,Object>>>() );
+				backup.put( s, new LinkedHashMap<Class<? extends Node>,Map<UUID,Map<String,Object>>>() );
 
 				for( Entry<Class<? extends Node>,Map<UUID,Map<String,Object>>> item : items.entrySet() )
 				{
@@ -1002,7 +1002,7 @@ public class PersistenceProxy
 
 		if(node instanceof DynamicDomain || ( node.getClass().equals(Node.class) && node.getSerializationNode() != null))
 			node = JSON2NodeUtil.json2Node(node.getSerializationNode(), NodeClassUtil.getDynamicEntityClassByFullName(new JSONObject(node.getSerializationNode()).get("type").toString()));
-
+		
 		onPreInsert( node, transactionId, executor );
 		Map<String,Object> nodeMap = DomainFieldManager.getInstance().convertFromDomainToMap( node );
 		/**
@@ -1085,11 +1085,11 @@ public class PersistenceProxy
 		if( rawData.isEmpty() )
 			return null;
 
-		rawData.put( Storage.TREE, new HashMap<UUID,Map<String,Object>>() );
+		rawData.put( Storage.TREE, new LinkedHashMap<UUID,Map<String,Object>>() );
 		for( Entry<UUID,Node> nodeEntry : nodeList.entrySet() )
 		{
 			Node rawNode = nodeEntry.getValue();
-			Map<String,Object> rawNodeData = new HashMap<String,Object>();
+			Map<String,Object> rawNodeData = new LinkedHashMap<String,Object>();
 			rawNodeData.put( "deleted", rawNode.isDeleted() );
 			rawNodeData.put( "id", rawNode.getId() );
 			rawNodeData.put( "parentId", rawNode.getParentId() );
@@ -1098,7 +1098,7 @@ public class PersistenceProxy
 		}
 
 		List<Node> result = new ArrayList<Node>();
-		Map<UUID,Map<String,Object>> dataInMap = new HashMap<UUID,Map<String,Object>>();
+		Map<UUID,Map<String,Object>> dataInMap = new LinkedHashMap<UUID,Map<String,Object>>();
 		dataInMap.putAll( rawData.get( Storage.TREE ) );
 
 		for( Entry<Storage,Map<UUID,Map<String,Object>>> solution : rawData.entrySet() )
@@ -1131,7 +1131,7 @@ public class PersistenceProxy
 	@Lock(LockType.WRITE)
 	public void modifyTreeNode( Node node, UUID transactionId, User executor ) throws UniqueViolateException, RequiredFieldMissingException, PersistenceException, ValidationFailedException
 	{
-		if( isCacheMode() )
+		if ( isCacheMode() )
 		{
 			onPreUpdate( node, transactionId, executor );
 			getCache().get( getCache().get( node.getId() ).getParentId() ).removeChild( getCache().get( node.getId() ) );
@@ -1140,14 +1140,12 @@ public class PersistenceProxy
 			onPostUpdate( node, transactionId, executor );
 			return;
 		}
-
-		if(DynamicDomain.class.isAssignableFrom(node.getClass()) || ( node.getClass().equals(Node.class) && node.getSerializationNode() != null))
+		if (DynamicDomain.class.isAssignableFrom(node.getClass()) || ( node.getClass().equals(Node.class) && node.getSerializationNode() != null))
 			node = JSON2NodeUtil.json2Node(node.getSerializationNode(), NodeClassUtil.getDynamicEntityClassByFullName(new JSONObject(node.getSerializationNode()).get("type").toString()));
-	
+		
 		onPreUpdate( node, transactionId, executor );
 		Map<String,Object> nodeMap = DomainFieldManager.getInstance().convertFromDomainToMap( node );
-
-		if( node instanceof SubNode )
+		if ( node instanceof SubNode )
 		{
 			Storage storage = DomainFieldManager.getInstance().getStorageForSubNode();
 			StorageHandler sh = getStorageHandlerList().get( storage );
@@ -1402,11 +1400,11 @@ public class PersistenceProxy
 
 	private Map<Storage,Map<Class<? extends Node>,List<UUID>>> splitDataGroupByIDs( List<? extends Node> nodeList, boolean includeSubNodeID )
 	{
-		Map<Storage,Map<Class<? extends Node>,List<UUID>>> data = new HashMap<Storage,Map<Class<? extends Node>,List<UUID>>>();
+		Map<Storage,Map<Class<? extends Node>,List<UUID>>> data = new LinkedHashMap<Storage,Map<Class<? extends Node>,List<UUID>>>();
 
 		for( Storage s : getStorageHandlerList().keySet() )
 		{
-			Map<Class<? extends Node>,List<UUID>> map = new HashMap<Class<? extends Node>,List<UUID>>();
+			Map<Class<? extends Node>,List<UUID>> map = new LinkedHashMap<Class<? extends Node>,List<UUID>>();
 			for( Node node : nodeList )
 			{
 				Class<? extends Node> clazz = node.getClass();
@@ -1425,16 +1423,16 @@ public class PersistenceProxy
 
 	private Map<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>> splitDataGroupForInsert( List<? extends Node> nodeList )
 	{
-		Map<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>> data = new HashMap<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>>();
+		Map<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>> data = new LinkedHashMap<Storage,Map<Class<? extends Node>,Map<UUID,Map<String,Object>>>>();
 
 		for( Storage s : getStorageHandlerList().keySet() )
 		{
-			Map<Class<? extends Node>,Map<UUID,Map<String,Object>>> map = new HashMap<Class<? extends Node>,Map<UUID,Map<String,Object>>>();
+			Map<Class<? extends Node>,Map<UUID,Map<String,Object>>> map = new LinkedHashMap<Class<? extends Node>,Map<UUID,Map<String,Object>>>();
 			for( Node node : nodeList )
 			{
 				Class<? extends Node> clazz = node.getClass();
 				if( map.get( clazz ) == null )
-					map.put( clazz, new HashMap<UUID,Map<String,Object>>() );
+					map.put( clazz, new LinkedHashMap<UUID,Map<String,Object>>() );
 				Map<String,Object> nodeMap = DomainFieldManager.getInstance().convertFromDomainToMap( node );
 				map.get( clazz ).put( node.getId(), DomainFieldManager.getInstance().filterMapByStorage( nodeMap, s, clazz ) );
 			}
@@ -1588,6 +1586,7 @@ public class PersistenceProxy
 			}
 		}
 	}
+	@SuppressWarnings("unused")
 	public static void main(String[] args) throws PersistenceException {
 		PersistenceProxy proxy = new PersistenceProxy();
 		proxy.init();
@@ -1596,8 +1595,8 @@ public class PersistenceProxy
 		} catch (InvalidCredentialsException e) {
 			e.printStackTrace();
 		}
-		Node a = proxy.getNodeByID(UUID.fromString("72bedae8-85e0-11e4-928e-0242ac11000b"));
-		Node node = proxy.getFullNodeByID(UUID.fromString("72bedae8-85e0-11e4-928e-0242ac11000b"));
+//		Node a = proxy.getNodeByID(UUID.fromString("72bedae8-85e0-11e4-928e-0242ac11000b"));
+		Node node = proxy.getFullNodeByID(UUID.fromString("9051b21d-2ffe-43fa-ae41-184de57b5d1c"));
 		System.out.println(User.class.getName());
 		System.out.println();
 //		User user = new User();

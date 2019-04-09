@@ -97,10 +97,10 @@ public abstract class AbstractNodeCContainer extends AbstractCContainer implemen
 	{
 		Button source = event.getButton();
 
-		if( source == save )
+		if ( source == save )
 		{
 			Throwable t = null;
-			if( !getForm().isValid() )
+			if(!getForm().isValid())
 			{
 				Notification.show( LocalizationHandler.get( LabelUtil.LABEL_VALIDATE_ERROR ), Type.WARNING_MESSAGE );
 				return;
@@ -108,14 +108,11 @@ public abstract class AbstractNodeCContainer extends AbstractCContainer implemen
 			setReadOnly( false );
 			getForm().commit();
 
-			
-
 			closeWindow();
 			( (CApplication) CApplication.getCurrent() ).getEventHandler().removeListener( this );
 			try
 			{
 				if( action == Action.INSERT ) {
-//					System.out.println(NodeClassUtil.getSerializationNode(node).getSerializationNode());
 					if(!DynamicDomain.class.isAssignableFrom(node.getClass()))
 						TreeHandler.get().insertTreeNode( node );
 					else

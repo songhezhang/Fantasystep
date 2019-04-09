@@ -10,3 +10,9 @@
 
   /* Insert your theme rules here */
 }
+
+.mytheme .v-context-menu-container {
+	max-height: 1000px;
+	max-width: 500px;
+	overflow-y: auto !important;
+}

@@ -4,8 +4,8 @@ import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +32,7 @@ public class DomainFieldManager {
 	}
 
 	public Map<String, Object> convertFromDomainToMap(Node node) {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		for(Field field : NodeClassUtil.getAllNodeFields(node.getClass()))
 			try {
 				FieldAttributeAccessor accessor = AnnotationsParser.getAttributes(node.getClass(), field.getName());
@@ -93,17 +93,20 @@ public class DomainFieldManager {
 			return ClassUtil.fromStringToCollection(ArrayList.class, accessor.getListType(), value.toString());
 		} else if (Set.class.isAssignableFrom(field.getType())) {
 			return ClassUtil.fromStringToCollection(HashSet.class, accessor.getListType(), value.toString());
+		} else if (Map.class.isAssignableFrom(field.getType())) {
+			return ClassUtil.fromStringToMap(LinkedHashMap.class, value.toString());
 		}
 		
 		SerializationType type = accessor.getSerializationType();
 		if(type == SerializationType.USE_FIELD_TYPE) {
-			if(field.getType().equals(Boolean.class))
+			if(field.getType().equals(Boolean.class) || field.getType().equals(boolean.class))
 				type = SerializationType.BOOLEAN;
 			else if(field.getType().equals(Date.class))
 				type = SerializationType.DATE;
-			else if(field.getType().equals(Long.class) || field.getType().equals(Integer.class))
+			else if(field.getType().equals(Long.class) || field.getType().equals(Integer.class)
+					|| field.getType().equals(long.class) || field.getType().equals(int.class))
 				type = SerializationType.INTEGER;
-			else if(field.getType().equals(Float.class))
+			else if(field.getType().equals(Float.class) || field.getType().equals(float.class))
 				type = SerializationType.DECIMAL;
 			else if(field.getType() == byte[].class)
 				return new String((byte[])value);
@@ -147,7 +150,7 @@ public class DomainFieldManager {
 
 	public Map<String, Object> filterMapByStorage(Map<String, Object> nodeMap,
 			Storage storage, Class<? extends Node> clazz) {
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new LinkedHashMap<String, Object>();
 		for(Field field : NodeClassUtil.getAllNodeFields(clazz))
 			try {
 
@@ -167,13 +170,13 @@ public class DomainFieldManager {
 	}
 
 	public Map<Class<? extends Node>,Map<String,Class<?>>> lookupDomainClassByStorage(Storage storage) {
-		Map<Class<? extends Node>,Map<String,Class<?>>> map = new HashMap<Class<? extends Node>,Map<String,Class<?>>>();
+		Map<Class<? extends Node>,Map<String,Class<?>>> map = new LinkedHashMap<Class<? extends Node>,Map<String,Class<?>>>();
 		for(Class<? extends Node> nodeClazz : NodeClassUtil.getNodeClassInJVM()) {
 			for(Field field : NodeClassUtil.getAllNodeFields(nodeClazz)) {
 				FieldAttributeAccessor accessor = AnnotationsParser.getAttributes(nodeClazz, field.getName());
 				if(accessor != null && (accessor.getStorage() == storage || accessor.getSharedKey())) {
 					if(!map.containsKey(nodeClazz))
-						map.put(nodeClazz, new HashMap<String,Class<?>>());
+						map.put(nodeClazz, new LinkedHashMap<String,Class<?>>());
 					if(storage == Storage.LDAP && accessor.getStorageName() != null){
 						map.get(nodeClazz).put(accessor.getStorageName(), field.getType());
 					} else map.get(nodeClazz).put(field.getName(), field.getType());
@@ -193,7 +196,7 @@ public class DomainFieldManager {
 
 	public Map<String, Class<?>> lookupDomainFieldByStorage(
 			Class<? extends Node> nodeClass, Storage storage) {
-		Map<String, Class<?>> map = new HashMap<String, Class<?>>();
+		Map<String, Class<?>> map = new LinkedHashMap<String, Class<?>>();
 		for(Field field : NodeClassUtil.getAllNodeFields(nodeClass)) {
 			FieldAttributeAccessor accessor = AnnotationsParser.getAttributes(nodeClass, field.getName());
 			if(accessor != null && (accessor.getStorage() == storage || accessor.getSharedKey())) {

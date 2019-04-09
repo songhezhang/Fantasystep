@@ -2,7 +2,7 @@ package com.fantasystep.persistence.mongo;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -48,12 +48,12 @@ public class MongoStorageHandler implements StorageHandler {
 			pipeline.add(new BasicDBObject("$match", new BasicDBObject("id", new BasicDBObject("$in", list.toArray()))));
 		}
 
-        Map<UUID, Map<String, Object>> map = new HashMap<UUID, Map<String, Object>>();
+        Map<UUID, Map<String, Object>> map = new LinkedHashMap<UUID, Map<String, Object>>();
 		if(pipeline.size() > 0) {
 	        AggregationOutput output = coll.aggregate(pipeline);
 	        for (DBObject result : output.results()) {
 	        	map.put(UUID.fromString(result.get("id").toString()), (Map<String, Object>)result.toMap());
-	        	logger.info(result.toString());
+	        	logger.debug(result.toString());
 	        }
 		} else {
 			DBCursor cursor = coll.find();
@@ -87,7 +87,7 @@ public class MongoStorageHandler implements StorageHandler {
 			builder.insert(dbObject);
 		}
 		BulkWriteResult result = builder.execute();
-        logger.info("Multiple insert write result : " + result);
+        logger.debug("Multiple insert write result : " + result);
 		return result.isAcknowledged();
 	}
 
@@ -97,7 +97,7 @@ public class MongoStorageHandler implements StorageHandler {
 		DBCollection coll = MongoConfig.getInstance().getDB().getCollection(nodeClass.getSimpleName());
 		DBObject dbObject = (DBObject)com.mongodb.util.JSON.parse(JSON2NodeUtil.object2Json(node));
 		WriteResult result = coll.insert(dbObject);
-		logger.info("Single insert write result : " + result);
+		logger.debug("Single insert write result : " + result);
 		return result.wasAcknowledged();
 	}
 
@@ -106,7 +106,7 @@ public class MongoStorageHandler implements StorageHandler {
 			Map<String, Object> node) throws PersistenceException {
 		DBCollection coll = MongoConfig.getInstance().getDB().getCollection(nodeClass.getSimpleName());
 		WriteResult result = coll.update(new BasicDBObject("id", id.toString()), new BasicDBObject("$set", (DBObject)com.mongodb.util.JSON.parse(JSON2NodeUtil.object2Json(node))));
-		logger.info("Single update write result : " + result);
+		logger.debug("Single update write result : " + result);
 		return result.wasAcknowledged();
 	}
 
@@ -118,7 +118,7 @@ public class MongoStorageHandler implements StorageHandler {
 		for(UUID id : ids)
 			builder.find(new BasicDBObject("id", id.toString())).removeOne();
 		BulkWriteResult result = builder.execute();
-        logger.info("Multiple destroy write result : " + result);
+        logger.debug("Multiple destroy write result : " + result);
         return result.isAcknowledged();
 	}
 
@@ -129,7 +129,7 @@ public class MongoStorageHandler implements StorageHandler {
 		DBObject obj = coll.findOne(new BasicDBObject("id", id.toString()));
 		if(obj != null) {
 			WriteResult result = coll.remove(obj);
-	        logger.info("Single destroy write result : " + result);
+	        logger.debug("Single destroy write result : " + result);
 			return result.wasAcknowledged();
 		} else return false;
 	}
@@ -146,7 +146,18 @@ public class MongoStorageHandler implements StorageHandler {
 		MongoConfig.getInstance().getClient().close();
 	}
 	
-	public static void main(String[] args) throws Exception {
+//	public static void main(String[] args) throws Exception {
+//		String a = "{\"home\":{\"left\":\"-1700px\",\"top\":\"-2100px\",\"rotate\":\"-30deg\",\"scale\":\"1.0\"},\"1-2-1\":{\"animation\":{\"left\":\"-100px\",\"top\":\"20px\",\"rotate\":\"0deg\",\"scale\":\"1.0\"},\"captionIndex\":10},\"1-5-2\":{\"animation\":{\"left\":\"-3500px\",\"top\":\"-800px\",\"rotate\":\"90deg\",\"scale\":\"1.0\"},\"captionIndex\":16},\"1-9-1\":{\"animation\":{\"left\":\"-1400px\",\"top\":\"0px\",\"rotate\":\"-30deg\",\"scale\":\"1.0\"},\"captionIndex\":6},\"1-13-2\":{\"animation\":{\"left\":\"-3500px\",\"top\":\"-3500px\",\"rotate\":\"90deg\",\"scale\":\"1.0\"},\"captionIndex\":4},\"2-1-4\":{\"animation\":{\"left\":\"-900px\",\"top\":\"-3800px\",\"rotate\":\"-90deg\",\"scale\":\"1.0\"},\"captionIndex\":1},\"2-7-2\":{\"animation\":{\"left\":\"-2900px\",\"top\":\"-1500px\",\"rotate\":\"90deg\",\"scale\":\"1.0\"},\"captionIndex\":7},\"3-3-4\":{\"animation\":{\"left\":\"-1500px\",\"top\":\"-3150px\",\"rotate\":\"-90deg\",\"scale\":\"1.0\"},\"captionIndex\":9},\"3-9-2\":{\"animation\":{\"left\":\"-2200px\",\"top\":\"-2150px\",\"rotate\":\"90deg\",\"scale\":\"1.0\"},\"captionIndex\":8},\"3-13-1\":{\"animation\":{\"left\":\"-3700px\",\"top\":\"-1300px\",\"rotate\":\"0deg\",\"scale\":\"1.0\"},\"captionIndex\":5},\"4-1-1\":{\"animation\":{\"left\":\"300px\",\"top\":\"-1950px\",\"rotate\":\"0deg\",\"scale\":\"1.0\"},\"captionIndex\":3},\"4-5-4\":{\"animation\":{\"left\":\"-1700px\",\"top\":\"-2100px\",\"rotate\":\"-30deg\",\"scale\":\"1.0\"},\"captionIndex\":-1},\"4-11-2\":{\"animation\":{\"left\":\"-2100px\",\"top\":\"-2700px\",\"rotate\":\"60deg\",\"scale\":\"1.0\"},\"captionIndex\":14},\"4-13-4\":{\"animation\":{\"left\":\"-4050px\",\"top\":\"-1850px\",\"rotate\":\"0deg\",\"scale\":\"1.0\"},\"captionIndex\":11},\"5-6-4\":{\"animation\":{\"left\":\"-2900px\",\"top\":\"-2110px\",\"rotate\":\"-90deg\",\"scale\":\"1.0\"},\"captionIndex\":2},\"6-1-4\":{\"animation\":{\"left\":\"-3500px\",\"top\":\"-3800px\",\"rotate\":\"-90deg\",\"scale\":\"1.0\"},\"captionIndex\":17},\"6-3-1\":{\"animation\":{\"left\":\"-450px\",\"top\":\"-3285px\",\"rotate\":\"0deg\",\"scale\":\"1.0\"},\"captionIndex\":13},\"6-7-4\":{\"animation\":{\"left\":\"-3500px\",\"top\":\"-1760px\",\"rotate\":\"-90deg\",\"scale\":\"1.0\"},\"captionIndex\":12},\"5-9-1\":{\"animation\":{\"left\":\"-2700px\",\"top\":\"-2350px\",\"rotate\":\"-30deg\",\"scale\":\"1.0\"},\"captionIndex\":15}}";
+//		DBObject b = (DBObject)com.mongodb.util.JSON.parse(a);
+//		System.out.println(b.toString());
+//	}
+//		MongoStorageHandler handler = new MongoStorageHandler();
+//		Map<String, Object> map = handler.read(Menulink.class, UUID.fromString("f0ae7f45-6018-48aa-aa72-3d30582305ac"), null);
+//		System.out.println(map.get("linkJson"));
+//		System.out.println(map.get("linkJson").getClass().getCanonicalName());
+//		JSONArray array = new JSONArray(map.get("linkJson").toString());
+//		List<?> lt = JSONUtil.toList(array);
+//		List<Node> list = new ArrayList<Node>();
 //		MongoStorageHandler handler = new MongoStorageHandler();
 //		Map<UUID, Map<String, Object>> map = handler.read(TestMongo2.class, new ArrayList<UUID>(), null);
 //		List<Node> list = new ArrayList<Node>();
@@ -220,5 +231,5 @@ public class MongoStorageHandler implements StorageHandler {
 //		System.out.println(objNew);
 //		logger.info(mm);
 		
-	}
+//	}
 }
